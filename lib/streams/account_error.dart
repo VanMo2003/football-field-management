@@ -13,11 +13,12 @@ class AccountErrorStreams {
   Stream get passwordErrorStream => passwordController.stream;
 
   bool checkValidate(String? email, String? password) {
+    emailController.sink.add(ValidationHelper.validateEmail(email));
+    passwordController.sink.add(ValidationHelper.validatePass(password));
     if (email == null || password == null) {
-      emailController.sink.add(ValidationHelper.validateEmail(email));
-      passwordController.sink.add(ValidationHelper.validatePass(password));
       return false;
     }
+
     return true;
   }
 

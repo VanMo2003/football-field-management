@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-
-import '../../../api/model/client_information.dart';
+import 'package:football_field_management/view/home/manager/manage_home.dart';
+import '../../../api/model/user_data.dart';
 import '../../../api/request/user_data_request.dart';
+import '../../../helper/constants/time_slot_to_string.dart';
 import '../../../streams/selected_time.dart';
-import 'family_user.dart';
-import 'text_span.dart';
+import 'user_family.dart';
+import '../../../helper/widgets/text_span.dart';
+import 'user_page.dart';
 
 Future<dynamic> dialogBuilder(
   BuildContext context,
@@ -17,26 +19,6 @@ Future<dynamic> dialogBuilder(
   final familyUser = FamilyUser.of(context);
 
   Size size = MediaQuery.of(context).size;
-  String timeSlotString(int timeSlot) {
-    switch (timeSlot) {
-      case 1:
-        return '10h30-12h00';
-      case 2:
-        return '12h00-13h30';
-      case 3:
-        return '13h30-15h00';
-      case 4:
-        return '15h00-16h30';
-      case 5:
-        return '16h30-18h00';
-      case 6:
-        return '18h00-19h30';
-      case 7:
-        return '19h30-21h00';
-      default:
-        return '';
-    }
-  }
 
   return showDialog<dynamic>(
     context: context,
@@ -52,7 +34,7 @@ Future<dynamic> dialogBuilder(
               textSpan('Tên sân: ', nameFootballField),
               textSpan('ngày: ', selectedDay),
               textSpan('Sân số: ', '$numberYard'),
-              textSpan('Khung giờ: ', timeSlotString(timeSlot)),
+              textSpan('Khung giờ: ', timeSlotToString(timeSlot)),
               textSpan('Tiền sân: ', '200.000'),
             ],
           ),
@@ -74,7 +56,7 @@ Future<dynamic> dialogBuilder(
             child: const Text('Đồng ý'),
             onPressed: () async {
               if (familyUser != null) {
-                ClientInformation clientInformation = ClientInformation(
+                UserData clientInformation = UserData(
                   nameFootballField: nameFootballField,
                   nameUser: familyUser.userInformationAPI!.nameUser ?? '',
                   phoneNumber: familyUser.userInformationAPI!.phoneNumber ?? '',
@@ -82,11 +64,15 @@ Future<dynamic> dialogBuilder(
                   numberYard: numberYard,
                   timeSlot: timeSlot,
                   price: 200,
+                  status: "UN_CONFIMRED",
                 );
 
                 await UserDataRequest.insertUseData(clientInformation);
 
-                selectedDayStreams.setSelectedDay(selectedDay);
+                UserPage.listUserBook.add(clientInformation);
+                ManageHome.listUserData.add(clientInformation);
+                UserPage.userBookStreams.listSink.add(UserPage.listUserBook);
+                selectedDayStreams.selectedDaySink.add(selectedDay);
 
                 Navigator.of(context).pop();
               }

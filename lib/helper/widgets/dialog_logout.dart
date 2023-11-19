@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/bloc_export.dart';
 
 Future<void> dialogExit(
   BuildContext contextParent,
 ) {
-  // Size size = MediaQuery.of(context).size;
-
   return showDialog<void>(
     context: contextParent,
     builder: (BuildContext context) {
@@ -30,9 +29,14 @@ Future<void> dialogExit(
             ),
             child: const Text('Đồng ý'),
             onPressed: () async {
+              final Future<SharedPreferences> _prefs =
+                  SharedPreferences.getInstance();
+              final SharedPreferences prefs = await _prefs;
+              await prefs.remove('email');
+              await prefs.remove('permission');
               Navigator.of(context).pop();
+
               contextParent.read<BlocApp>().add(const LogoutEnvent());
-              debugPrint('sign out');
             },
           ),
         ],

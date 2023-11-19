@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../controller/controller.dart';
 import '../../../helper/widgets/row_sidebar_widget.dart';
-import 'revenue_screen.dart';
+import 'manager_revenue.dart';
 
 class SideBarPage extends StatefulWidget {
   const SideBarPage(

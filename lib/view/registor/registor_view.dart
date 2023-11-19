@@ -91,7 +91,6 @@ class _RegistorViewState extends State<RegistorView> {
                       }),
                       const SizedBox(height: 10),
                       GestureDetector(onTap: () {
-                        debugPrint('click next to registor');
                         isClickText.value = true;
                         isLoading.value = true;
                         Future.delayed(

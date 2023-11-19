@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../helper/constants/format_calendart.dart';
-import '../../../helper/constants/selecting_time.dart';
 
 class CalendarScreen extends StatefulWidget {
   CalendarScreen({super.key, required this.selectedDay});
@@ -14,6 +13,8 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
+    final DateTime today = DateTime.now();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -28,7 +29,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             TableCalendar(
               rowHeight: 43,
-              focusedDay: DateTime.now(),
+              focusedDay: today,
               headerStyle: const HeaderStyle(
                   formatButtonVisible: false, titleCentered: true),
               locale: 'en_US',
@@ -44,7 +45,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                today = widget.selectedDay;
                 Navigator.pop(context, widget.selectedDay);
               },
               child: const Text('Oke'),

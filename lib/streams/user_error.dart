@@ -16,11 +16,11 @@ class UserErrorStreams {
     String? nameUser,
     String? phoneNumber,
   ) {
-    if (nameUser == '' || phoneNumber == '') {
-      nameUserController.sink.add(ValidationHelper.validateString(nameUser));
+    nameUserController.sink.add(ValidationHelper.validateEnterInfo(nameUser));
 
-      phoneNumberController.sink
-          .add(ValidationHelper.validateString(phoneNumber));
+    phoneNumberController.sink
+        .add(ValidationHelper.validateEnterInfo(phoneNumber));
+    if (nameUser == '' || phoneNumber == '') {
       return false;
     }
     return true;

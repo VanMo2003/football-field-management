@@ -7,7 +7,8 @@ import '../model/user_infmation.dart';
 
 class UserRequest {
   static String url =
-      'https://football-field-management.up.railway.app/userInformation';
+      // 'https://football-field-management.up.railway.app/userInformation';
+      'http://10.0.2.2:8080/userInformation';
 
   static Future<UserInformationAPI> getUserInformationByEmail(
       String email) async {

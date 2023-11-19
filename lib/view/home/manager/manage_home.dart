@@ -3,17 +3,23 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:football_field_management/api/model/user_data.dart';
 import 'package:get/get.dart';
 import '../../../helper/constants/format_calendart.dart';
-import '../../../helper/constants/selecting_time.dart';
-import 'appbar_manage.dart';
-import 'body_manage.dart';
+import '../../../streams/selected_time.dart';
+import 'manage_appbar.dart';
+import 'manage_body.dart';
 
 class ManageHome extends StatefulWidget {
-  const ManageHome(
+  ManageHome(
       {super.key, required this.nameFootballField, required this.totalYard});
   final int totalYard;
   final String nameFootballField;
+
+  static List<UserData> listUserData = [];
+  static SelectedDayStreams selectedDayStreams = SelectedDayStreams();
+  static DateTime selectedDay = DateTime.now();
+
   @override
   State<ManageHome> createState() => _ManageHomeState();
 }
@@ -22,20 +28,18 @@ class _ManageHomeState extends State<ManageHome> {
   RxDouble? xOffset = 0.0.obs;
   RxDouble? yOffset = 0.0.obs;
   RxBool? isPersonDrawerOpen = false.obs;
-  RxString selectedDay = dateFormat.format(DateTime.now()).obs;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    today = DateTime.now();
+    ManageHome.selectedDay = DateTime.now();
+    ManageHome.selectedDayStreams.selectedDaySink
+        .add(dateFormat.format(DateTime.now()));
     return Obx(() {
       return AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         transform: Matrix4.translationValues(xOffset!.value, yOffset!.value, 0)
           ..scale(isPersonDrawerOpen!.value ? 0.9 : 1.0)
-          ..rotateZ(
-            isPersonDrawerOpen!.value ? pi / 20 : 0,
-          ),
+          ..rotateZ(isPersonDrawerOpen!.value ? pi / 20 : 0),
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Container(
@@ -48,25 +52,18 @@ class _ManageHomeState extends State<ManageHome> {
             ),
             child: Column(
               children: [
-                appbarManage(
-                  context,
-                  size,
-                  widget.nameFootballField,
-                  selectedDay,
-                  today,
+                AppbarManager(
+                  nameFootballField: widget.nameFootballField,
                   isPersonDrawerOpen: isPersonDrawerOpen,
                   xOffset: xOffset,
                   yOffset: yOffset,
                   isManage: true,
                 ),
-                Obx(
-                  () => BodyManage(
-                    nameFootballField: widget.nameFootballField,
-                    totalYard: widget.totalYard,
-                    selectedDay: selectedDay.value,
-                    isManage: true,
-                    isPersonDrawerOpen: isPersonDrawerOpen!.value,
-                  ),
+                BodyManage(
+                  nameFootballField: widget.nameFootballField,
+                  totalYard: widget.totalYard,
+                  isManage: true,
+                  isPersonDrawerOpen: isPersonDrawerOpen!.value,
                 ),
               ],
             ),

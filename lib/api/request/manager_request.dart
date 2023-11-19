@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import '../model/manage_information.dart';
 
 class ManagerRequest {
-  static String url =
-      'https://football-field-management.up.railway.app/footballFieldInformation';
+  static String url = 'http://10.0.2.2:8080/footballFieldInformation';
+  // 'https://football-field-management.up.railway.app/footballFieldInformation';
 
   static Future<List<String>> getFootballField() async {
     Uri uri = Uri.parse(url);
@@ -88,7 +87,6 @@ class ManagerRequest {
     });
 
     Response response = await http.post(uri, headers: headers, body: body);
-    debugPrint('${response.body}');
 
     return response.statusCode;
   }

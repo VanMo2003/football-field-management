@@ -3,8 +3,12 @@ import '../../../api/model/user_infmation.dart';
 
 class FamilyUser extends InheritedWidget {
   final UserInformationAPI? userInformationAPI;
-  FamilyUser({super.key, required Widget child, this.userInformationAPI})
-      : super(child: child);
+
+  const FamilyUser({
+    super.key,
+    required Widget child,
+    this.userInformationAPI,
+  }) : super(child: child);
 
   @override
   bool updateShouldNotify(FamilyUser oldWidget) {

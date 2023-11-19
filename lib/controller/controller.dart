@@ -28,8 +28,6 @@ class ControllerApp {
     RxString error,
     RxBool isLoading,
   ) async {
-    debugPrint('click login');
-
     isLoading.value = true;
 
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -47,10 +45,9 @@ class ControllerApp {
         final Future<SharedPreferences> _prefs =
             SharedPreferences.getInstance();
         final SharedPreferences prefs = await _prefs;
-        await prefs.setBool('permission', checkLogin);
+        await prefs.setBool('permission', resultLogin == 'true');
         await prefs.setString('email', email);
-        debugPrint('login : $email - ${checkLogin}');
-        context.read<BlocApp>().add(LoginEvent(email, checkLogin));
+        context.read<BlocApp>().add(LoginEvent(email, resultLogin == 'true'));
       } else {
         error.value = resultLogin;
       }
@@ -108,15 +105,14 @@ class ControllerApp {
 
     bool check =
         stream.checkValidate(nameManage, nameFootballField, totalYards);
-    debugPrint('$check');
     if (check) {
-      debugPrint('haha');
       ManageInformationAPI manageInformation = ManageInformationAPI(
-          email: email,
-          permission: permission,
-          nameFootballField: nameFootballField,
-          nameManage: nameManage,
-          totalYards: int.parse(totalYards));
+        email: email,
+        permission: permission,
+        nameFootballField: nameFootballField,
+        nameManage: nameManage,
+        totalYards: int.parse(totalYards),
+      );
 
       await ManagerRequest.insertFootballFied(manageInformation);
 
@@ -163,10 +159,6 @@ class ControllerApp {
   }
 
   static void logout(BuildContext context) async {
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    final SharedPreferences prefs = await _prefs;
-    await prefs.remove('email');
-    await prefs.remove('permission');
     dialogExit(context);
   }
 }

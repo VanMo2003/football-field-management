@@ -78,7 +78,6 @@ class _LoginViewState extends State<LoginView> {
                           }),
                       const SizedBox(height: 10),
                       GestureDetector(onTap: () {
-                        debugPrint('click next to registor');
                         isClickText.value = true;
                         isLoading.value = true;
                         Future.delayed(

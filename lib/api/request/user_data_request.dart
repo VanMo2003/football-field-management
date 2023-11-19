@@ -1,17 +1,43 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
+import 'package:football_field_management/api/model/user_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import '../model/client_information.dart';
-import '../model/user_data.dart';
-
 class UserDataRequest {
-  static const String url =
-      'https://football-field-management.up.railway.app/userData';
+  static const String url = 'http://10.0.2.2:8080/userData';
+  // 'https://football-field-management.up.railway.app/userData';
+
+  static Future<List<UserData>> getUserBookData(String nameUser) async {
+    var response = await http.get(Uri.parse('$url/$nameUser'));
+    var jsonData;
+    List<UserData> list = [];
+
+    if (response.statusCode == 200) {
+      jsonData = jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
+      for (var element in jsonData) {
+        UserData userBook = UserData(
+          nameFootballField: element['nameFootballField'],
+          nameUser: element['nameUser'],
+          phoneNumber: element['phoneNumber'],
+          selectedDay: element['selectedDay'],
+          numberYard: element['numberYard'],
+          timeSlot: element['timeSlot'],
+          price: element['price'],
+          status: element['status'],
+        );
+        list.add(userBook);
+      }
+    }
+    return list;
+  }
 
   static Future<List<UserData>> getUserDataByNameFootballFieldAndSelectDay(
-      String nameFootballField, String selectedDay) async {
+    String nameFootballField,
+    String selectedDay,
+  ) async {
     var response =
         await http.get(Uri.parse('$url/$nameFootballField/$selectedDay'));
 
@@ -19,17 +45,24 @@ class UserDataRequest {
 
     List<UserData> list = [];
     for (var element in jsonData) {
-      UserData userInformation = UserData();
-      userInformation.numberYard = element['numberYard'];
-      userInformation.timeSlot = element['timeSlot'];
+      UserData userInformation = UserData(
+        nameFootballField: element['nameFootballField'],
+        nameUser: element['nameUser'],
+        phoneNumber: element['phoneNumber'],
+        selectedDay: element['selectedDay'],
+        numberYard: element['numberYard'],
+        timeSlot: element['timeSlot'],
+        price: element['price'],
+        status: element['status'],
+      );
       list.add(userInformation);
     }
+
     await Future.delayed(const Duration(milliseconds: 200));
     return list;
   }
 
-  static Future<dynamic> getUserData(
-      ClientInformation clientInformation) async {
+  static Future<dynamic> getUserData(UserData clientInformation) async {
     Uri uri = Uri.parse(url);
 
     Map<String, String> headers = {
@@ -43,13 +76,14 @@ class UserDataRequest {
       'selectedDay': clientInformation.selectedDay,
       'numberYard': clientInformation.numberYard,
       'timeSlot': clientInformation.timeSlot,
-      'price': clientInformation.price
+      'price': clientInformation.price,
+      'status': clientInformation.status
     });
 
     Response response = await http.post(uri, headers: headers, body: body);
     final bodyDecode = json.decode(response.body);
 
-    ClientInformation result = ClientInformation(
+    UserData result = UserData(
       nameFootballField: bodyDecode['nameFootballField'],
       nameUser: bodyDecode['nameUser'],
       phoneNumber: bodyDecode['phoneNumber'],
@@ -57,13 +91,13 @@ class UserDataRequest {
       numberYard: bodyDecode['numberYard'],
       timeSlot: bodyDecode['timeSlot'],
       price: bodyDecode['price'],
+      status: bodyDecode['status'],
     );
 
     return result;
   }
 
-  static Future<dynamic> insertUseData(
-      ClientInformation clientInformation) async {
+  static Future<dynamic> insertUseData(UserData clientInformation) async {
     Uri uri = Uri.parse('$url/insert');
 
     Map<String, String> headers = {
@@ -77,7 +111,8 @@ class UserDataRequest {
       'selectedDay': clientInformation.selectedDay,
       'numberYard': clientInformation.numberYard,
       'timeSlot': clientInformation.timeSlot,
-      'price': clientInformation.price
+      'price': clientInformation.price,
+      'status': clientInformation.status
     });
 
     final response = await http.post(uri, headers: headers, body: body);

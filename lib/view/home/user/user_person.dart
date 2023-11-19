@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../controller/controller.dart';
-import 'family_user.dart';
+import 'user_family.dart';
 
 class UserPerson extends StatelessWidget {
   const UserPerson({super.key});

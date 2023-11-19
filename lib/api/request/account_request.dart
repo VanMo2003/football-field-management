@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import '../model/account_api.dart';
 
 class AccountRequest {
-  static String url =
-      "https://football-field-management.up.railway.app/account";
+  static String url = "http://10.0.2.2:8080/account";
+  // "https://football-field-management.up.railway.app/account";
 
   static Future<dynamic> checkLogin(AccountAPI account) async {
     Uri uri = Uri.parse("$url/login");

@@ -1,19 +1,36 @@
 import 'dart:async';
 
-import '../helper/constants/format_calendart.dart';
+import 'package:rxdart/rxdart.dart';
 
 class SelectedDayStreams {
-  String selectedDay = dateFormat.format(DateTime.now());
+  final selectedDaySubject = BehaviorSubject<String>();
 
-  StreamController<String?> selectedDayController = StreamController<String?>();
+  var selectedDayTransformer = StreamTransformer<String, String>.fromHandlers(
+    handleData: (data, sink) {
+      sink.add(data);
+    },
+  );
 
-  Stream get selectedDayStream => selectedDayController.stream;
+  Stream<String> get selectedDayStreams =>
+      selectedDaySubject.stream.transform(selectedDayTransformer);
 
-  void setSelectedDay(String selectedDay) {
-    selectedDayController.sink.add(selectedDay);
-  }
+  Sink<String> get selectedDaySink => selectedDaySubject.sink;
 
   void dispose() {
-    selectedDayController.close();
+    selectedDaySubject.close();
   }
+
+  // String selectedDay = dateFormat.format(DateTime.now());
+
+  // StreamController<String?> selectedDayController = StreamController<String?>();
+
+  // Stream<String?> get selectedDayStream => selectedDayController.stream;
+
+  // void setSelectedDay(String selectedDay) {
+  //   selectedDayController.sink.add(selectedDay);
+  // }
+
+  // void dispose() {
+  //   selectedDayController.close();
+  // }
 }

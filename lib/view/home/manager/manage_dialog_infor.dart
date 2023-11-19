@@ -2,10 +2,9 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../api/model/client_information.dart';
+import '../../../api/model/user_data.dart';
 import '../../../api/request/user_data_request.dart';
-import '../../../streams/selected_time.dart';
-import '../user/text_span.dart';
+import '../../../helper/widgets/text_span.dart';
 
 Future<void> dialogShowInfor(
   BuildContext context,
@@ -13,9 +12,8 @@ Future<void> dialogShowInfor(
   String selectedDay,
   int numberYard,
   int timeSlot,
-  SelectedDayStreams selectedDayStreams,
 ) async {
-  ClientInformation clientInformation = ClientInformation(
+  UserData clientInformation = UserData(
     nameFootballField: nameFootballField,
     nameUser: '',
     phoneNumber: '',

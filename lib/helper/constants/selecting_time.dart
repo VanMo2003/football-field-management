@@ -1,1 +1,0 @@
-DateTime today = DateTime.now();

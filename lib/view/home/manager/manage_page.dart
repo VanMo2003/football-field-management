@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../api/request/manager_request.dart';
 import '../../../helper/widgets/loading_helper.dart';
 import 'manage_home.dart';
-import 'sidebar.dart';
+import 'manager_sidebar.dart';
 
 class ManagePage extends StatelessWidget {
   const ManagePage({super.key, required this.email});

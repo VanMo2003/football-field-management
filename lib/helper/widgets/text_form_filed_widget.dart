@@ -28,12 +28,6 @@ class TffEmailWidgetStream extends StatelessWidget {
             onChanged: (value) {
               controller.text = value;
             },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Enter an email';
-              }
-              return null;
-            },
             cursorColor: Colors.black,
             cursorHeight: 20,
             decoration: InputDecoration(

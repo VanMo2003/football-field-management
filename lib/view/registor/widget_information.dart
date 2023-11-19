@@ -28,7 +28,7 @@ class EnterInformationWidget {
         TffEmailWidgetStream(
             controller: numberYard,
             labelText: 'Tổng số sân',
-            stream: manageStream.phoneNumberErrorStream),
+            stream: manageStream.totalYardErrorStream),
         const SizedBox(height: 20),
         ButtonWidget(
           onPressed: () {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:football_field_management/view/home/manager/manage_home.dart';
+import 'package:football_field_management/view/home/user/user_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc/bloc_state.dart';
 import 'helper/colors/color_theme.dart';
@@ -54,5 +56,12 @@ class _MyAppState extends State<MyApp> {
               color: Colors.white,
             ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    UserPage.userBookStreams.dispose();
+    ManageHome.selectedDayStreams.dispose();
   }
 }
